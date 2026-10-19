@@ -1,0 +1,29 @@
+# Automotive Business Intelligence
+
+**Canadian Automotive Retail Market Analysis**
+
+This project explores sales patterns in Canada's automotive retail industry, with a focus on understanding market performance, regional differences, and changes over time.
+
+The goal is to turn publicly available industry data into useful business insights through data analysis and visualization.
+
+### Data Source
+
+Statistics Canada — Table 20-10-0056-04
+
+[Official dataset](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2010005604)
+
+### Tools and Technologies
+
+SQL · Python · Power BI · Microsoft Excel
+
+### Project Scope
+
+- Prepare and validate the sales data.
+- Analyze monthly and regional sales trends.
+- Develop SQL queries for business performance indicators.
+- Create interactive dashboards for reporting.
+- Summarize findings and potential business implications.
+
+### Project Status
+
+In progress. Analysis, dashboards, and supporting documentation will be added as the project develops.
