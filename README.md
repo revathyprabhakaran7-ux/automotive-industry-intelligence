@@ -8,7 +8,7 @@ The focus is on transforming publicly available industry data into meaningful in
 
 ### 01 — Automotive Business Intelligence
 
-An analysis of automotive market performance, sales trends, and regional differences using SQL, Python, Power BI, and Excel.
+An analysis of automotive market performance, sales trends, and regional differences using SQL, Python, Power BI, Tableau, and Excel.
 
 The project focuses on data preparation, KPI development, interactive dashboards, and communicating insights relevant to business operations.
 
@@ -26,7 +26,7 @@ The project will explore generative AI, prompt engineering, tool calling, AI age
 
 ## Technologies
 
-**Data Analysis and BI:** SQL, Python, pandas, NumPy, Power BI, Excel
+**Data Analysis and BI:** SQL, Python, pandas, NumPy, Power BI, Tableau, Excel
 
 **Machine Learning:** scikit-learn, time-series forecasting, MLflow, model evaluation
 
