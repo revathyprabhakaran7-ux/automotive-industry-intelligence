@@ -25,10 +25,13 @@ jobs:
       - name: Prepare monthly sales data
         run: python 01-business-intelligence/src/prepare_data.py
 
+      - name: Calculate automotive sales KPIs
+        run: python 01-business-intelligence/src/calculate_kpis.py
+
       - name: Upload cleaned sales data
         uses: actions/upload-artifact@v4
         with:
           name: clean-automotive-sales-data
-          path: 01-business-intelligence/outputs/monthly_vehicle_sales.csv
+          path: 01-business-intelligence/outputs/*.csv
           if-no-files-found: error
           retention-days: 7
