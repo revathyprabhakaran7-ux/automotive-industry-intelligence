@@ -89,14 +89,22 @@ def main() -> None:
     ridge_score = metrics(actual, ridge_pred)
     winner = "ridge" if ridge_score["mae"] < baseline_score["mae"] else "seasonal_naive"
 
-    test_dates = data["date"].iloc[-HOLDOUT_MONTHS:].reset_index(drop=True)
-       evaluation = pd.DataFrame({
+        test_dates = data["date"].iloc[-HOLDOUT_MONTHS:].reset_index(drop=True)
+
+    evaluation = pd.DataFrame({
         "date": test_dates,
         "actual": actual,
         "seasonal_naive_prediction": seasonal,
         "ridge_prediction": ridge_pred,
     })
 
+    evaluation.to_csv(
+        OUTPUT / "holdout_predictions.csv",
+        index=False
+    )
+
+    # Refit with all observed months before forecasting unseen future months.
+    model.fit(X, y)
     evaluation.to_csv(
         OUTPUT / "holdout_predictions.csv",
         index=False
