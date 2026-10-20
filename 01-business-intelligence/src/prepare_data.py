@@ -1,4 +1,3 @@
-
 name: Download and Prepare Automotive Data
 
 on:
@@ -17,16 +16,16 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Python dependencies
+      - name: Install pandas
         run: python -m pip install pandas
 
       - name: Download Statistics Canada dataset
         run: python 01-business-intelligence/src/load_data.py
 
-      - name: Prepare clean monthly sales data
+      - name: Prepare monthly sales data
         run: python 01-business-intelligence/src/prepare_data.py
 
-      - name: Upload cleaned dataset
+      - name: Upload cleaned sales data
         uses: actions/upload-artifact@v4
         with:
           name: clean-automotive-sales-data
