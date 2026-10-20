@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import pandas as pd
@@ -7,7 +8,19 @@ from mcp.server.fastmcp import FastMCP
 mcp = FastMCP("Automotive Sales Analytics")
 
 REPO = Path(__file__).resolve().parents[2]
-SALES_FILE = REPO / "01-business-intelligence" / "outputs" / "monthly_vehicle_sales.csv"
+
+SALES_FILE = (
+    REPO
+    / "01-business-intelligence"
+    / "outputs"
+    / "monthly_vehicle_sales.csv"
+)
+
+FORECAST_DIR = (
+    REPO
+    / "02-automotive-forecasting"
+    / "outputs"
+)
 
 
 def load_sales():
@@ -17,12 +30,13 @@ def load_sales():
         )
 
     data = pd.read_csv(SALES_FILE, parse_dates=["date"])
-    return data.sort_values("date")
+
+    return data.sort_values("date").reset_index(drop=True)
 
 
 @mcp.tool()
 def get_annual_sales(year: int) -> dict:
-    """Return total Canadian new motor vehicle sales for a year."""
+    """Get Canadian vehicle sales for a given year."""
 
     data = load_sales()
     selected = data[data["date"].dt.year == year]
@@ -39,7 +53,7 @@ def get_annual_sales(year: int) -> dict:
 
 @mcp.tool()
 def compare_sales(year1: int, year2: int) -> dict:
-    """Compare vehicle sales between two years."""
+    """Compare vehicle sales between two complete years."""
 
     first = get_annual_sales(year1)
     second = get_annual_sales(year2)
@@ -51,7 +65,9 @@ def compare_sales(year1: int, year2: int) -> dict:
         return second
 
     if first["months_available"] != 12 or second["months_available"] != 12:
-        return {"error": "Both years must have 12 months of data."}
+        return {
+            "error": "Both years must contain 12 months of sales data."
+        }
 
     sales1 = first["vehicles_sold"]
     sales2 = second["vehicles_sold"]
@@ -69,7 +85,7 @@ def compare_sales(year1: int, year2: int) -> dict:
 
 @mcp.tool()
 def get_latest_sales() -> dict:
-    """Return the most recent monthly sales observation."""
+    """Get the most recent monthly sales observation."""
 
     data = load_sales()
     latest = data.iloc[-1]
@@ -78,6 +94,43 @@ def get_latest_sales() -> dict:
         "month": latest["date"].strftime("%Y-%m"),
         "vehicles_sold": int(latest["vehicles_sold"]),
     }
+
+
+@mcp.tool()
+def get_forecast_evaluation() -> dict:
+    """Get forecasting model accuracy and comparison results."""
+
+    file = FORECAST_DIR / "evaluation_metrics.json"
+
+    if not file.exists():
+        return {
+            "error": "Forecast evaluation results are unavailable."
+        }
+
+    with file.open("r", encoding="utf-8") as f:
+        results = json.load(f)
+
+    return results
+
+
+@mcp.tool()
+def get_sales_forecast() -> list[dict]:
+    """Get the next 12 months of vehicle sales forecasts."""
+
+    file = FORECAST_DIR / "forecast_12_months.csv"
+
+    if not file.exists():
+        return [
+            {"error": "Forecast data is unavailable."}
+        ]
+
+    forecast = pd.read_csv(file)
+
+    forecast = forecast.astype(object).where(
+        pd.notna(forecast), None
+    )
+
+    return forecast.to_dict(orient="records")
 
 
 if __name__ == "__main__":
