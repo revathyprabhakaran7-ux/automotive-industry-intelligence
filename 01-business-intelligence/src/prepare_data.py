@@ -23,6 +23,7 @@ sales = df[
 ].copy()
 
 print("Rows after filtering:", len(sales), flush=True)
+print("Actual REF_DATE examples:", sales["REF_DATE"].head(10).tolist(), flush=True)
 
 # Interpret two-digit years explicitly
 # 46–99 = 1946–1999; 00–45 = 2000–2045
