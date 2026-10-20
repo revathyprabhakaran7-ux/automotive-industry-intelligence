@@ -1,0 +1,36 @@
+name: Evaluate and Forecast Automotive Sales
+
+on:
+  workflow_dispatch:
+
+jobs:
+  forecast:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: python -m pip install -r 02-automotive-forecasting/requirements.txt
+      - name: Download Statistics Canada data
+        run: python 01-business-intelligence/src/load_data.py
+      - name: Prepare monthly sales data
+        run: python 01-business-intelligence/src/prepare_data.py
+      - name: Evaluate models and forecast
+        run: python 02-automotive-forecasting/src/forecast_sales.py
+      - name: Run forecasting smoke test
+        run: python -m unittest discover -s 02-automotive-forecasting/tests -v
+      - name: Upload forecasting results
+        uses: actions/upload-artifact@v4
+        with:
+          name: automotive-forecast-results
+          path: |
+            02-automotive-forecasting/outputs/*.csv
+            02-automotive-forecasting/outputs/*.json
+            02-automotive-forecasting/outputs/mlflow.db
+            02-automotive-forecasting/outputs/mlruns/
+          if-no-files-found: error
+          retention-days: 7
