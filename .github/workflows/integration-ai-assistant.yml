@@ -1,0 +1,56 @@
+
+name: Automotive AI Integration
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "03-ai-analytics-assistant/**"
+      - ".github/workflows/integration-ai-assistant.yml"
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r 02-automotive-forecasting/requirements.txt
+          python -m pip install -r 03-ai-analytics-assistant/requirements.txt
+          python -m pip install requests
+
+      - name: Download Statistics Canada data
+        run: |
+          python 01-business-intelligence/src/load_data.py
+
+      - name: Prepare monthly sales
+        run: |
+          python 01-business-intelligence/src/prepare_data.py
+
+      - name: Generate sales forecasts
+        run: |
+          python 02-automotive-forecasting/src/forecast_sales.py
+
+      - name: Validate MCP tools with real data
+        run: |
+          python 03-ai-analytics-assistant/src/integration_report.py
+
+      - name: Upload integration results
+        uses: actions/upload-artifact@v4
+        with:
+          name: automotive-ai-integration-results
+          path: |
+            03-ai-analytics-assistant/outputs/integration_report.json
+            02-automotive-forecasting/outputs/metrics.json
+            02-automotive-forecasting/outputs/next_12_months_forecast.csv
+          if-no-files-found: error
+          retention-days: 30
