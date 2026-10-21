@@ -2,60 +2,62 @@
 
 ## Overview
 
-This project explores Canadian automotive market performance through data analysis and business intelligence reporting.
+Business intelligence analysis of Canadian new motor vehicle sales using Statistics Canada data, Python, and Tableau.
 
-The objective is to examine vehicle sales trends, regional differences, and market developments, and translate the findings into useful insights for business planning and decision-making.
+The project automates data preparation, calculates sales performance indicators, and visualizes historical automotive market trends.
 
-## Objectives
+## Data Source
 
-- Prepare and validate publicly available automotive sales data.
-- Analyze sales performance and changes over time.
-- Identify regional trends and market patterns where supported by the data.
-- Develop business performance indicators using SQL.
-- Build interactive dashboards using Power BI and Tableau.
-- Summarize key findings through Excel analysis and business reporting.
+[Statistics Canada — Table 20-10-0085-01: New Motor Vehicle Sales](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2010008501)
 
-## Tools and Technologies
+**Period:** January 1946 – August 2026
 
-**Data Preparation:** Python, pandas, NumPy, Excel
+**Scope:** Canada-wide, total new motor vehicles, all fuel types, all manufacturing origins, unadjusted sales in units.
 
-**Data Analysis:** SQL, exploratory data analysis, KPI development
+## Tech Stack
 
-**Visualization:** Power BI, Tableau
+**Python · pandas · Tableau · GitHub Actions · GitHub**
 
-**Documentation and Version Control:** Git, GitHub
+## Methodology
 
-## Data Sources
+1. **Data acquisition:** Download and extract the official Statistics Canada dataset using `load_data.py`.
+2. **Data preparation:** Filter national vehicle sales, clean dates and values, and validate records using `prepare_data.py`.
+3. **KPI calculation:** Calculate month-over-month growth, year-over-year growth, and rolling 12-month indicators using `calculate_kpis.py`.
+4. **Visualization:** Use Tableau to analyze monthly vehicle sales trends and annual sales growth.
 
-The project will use publicly available Canadian automotive industry data, including:
+## Key Performance Indicators
 
-**Statistics Canada — New Motor Vehicle Sales, Monthly (Table 20-10-0085-01)**
+| KPI | Description |
+|---|---|
+| Monthly Vehicle Sales | Number of new vehicles sold each month |
+| Month-over-Month Growth (%) | Percentage change from the preceding month |
+| Year-over-Year Growth (%) | Percentage change from the same month in the previous year |
+| Rolling 12-Month Average | Average monthly sales over the preceding 12 months |
+| Rolling 12-Month Total | Total vehicles sold over the preceding 12 months |
 
-[View official dataset](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2010008501)
+## Tableau Dashboard
 
-Additional government datasets may be incorporated to support regional comparisons and broader market analysis. Sources and limitations will be documented as they are introduced.
+Interactive dashboard featuring the latest monthly vehicle sales, historical sales trends, and year-over-year sales growth.
 
-## Planned Analysis
+**[View Interactive Dashboard on Tableau Public](https://public.tableau.com/app/profile/revathy.prabhakaran/viz/CanadianAutomotiveSalesIntelligence/CanadianAutomotiveMarketPerformance)**
 
-- Monthly and annual vehicle sales trends
-- Year-over-year sales growth
-- Vehicle category comparisons
-- Regional performance, where data is available
-- Sales KPIs and dashboard reporting
-- Business insights and recommendations
+## Outputs
 
-## Planned Deliverables
+Generated under `01-business-intelligence/outputs/`:
 
-- Python data-cleaning scripts
-- SQL analysis queries
-- Power BI dashboard
-- Tableau dashboard
-- Excel analysis workbook
-- Dashboard screenshots and business insights
-- Data source and methodology documentation
+- `monthly_vehicle_sales.csv` — Cleaned historical vehicle sales dataset.
+- `vehicle_sales_kpis.csv` — Monthly vehicle sales with growth rates and rolling indicators.
 
-## Project Status
+The cleaned dataset also serves as the input for **Project 02 — Automotive Sales Forecasting**.
 
-**In development**
+## Automation
 
-Analysis scripts, dashboards, results, and supporting documentation will be added as the project progresses.
+Python scripts handle data acquisition, preparation, and KPI calculations. GitHub Actions supports the automated data workflow.
+
+## Limitations
+
+The analysis covers aggregate Canadian vehicle sales rather than regional or vehicle-category comparisons. Data is not seasonally adjusted, and historical trends do not establish causal relationships.
+
+---
+
+*Portfolio project using publicly available Statistics Canada data.*
